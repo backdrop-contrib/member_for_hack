@@ -1,0 +1,60 @@
+<?php
+
+/**
+ * @file
+ * Alter the date shown for membership length on user profiles.
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function member_for_hack_permission() {
+  return array(
+    'change any user membership join date' => array(
+      'title' => t('Alter the "Member for" date for any user profile'),
+    ),
+    'change own user membership join date' => array(
+      'title' => t('Alter the "Member for" date on only your own user profile'),
+    ),
+  );
+}
+
+/**
+ * Form constructor for the membership join date alteration form.
+ *
+ * Path: user/%user/member_for
+ */
+function member_for_hack_form_user_profile_form_alter(&$form, &$form_state, $form_id) {
+  $form['member_for_hack'] = array(
+    '#type' => 'fieldset',
+    '#title' => 'Alter membership join date',
+    '#access' => user_access('change any user membership join date') || user_access('change own user membership join date'),
+    '#collapsed' => TRUE,
+    '#collapsible' => TRUE,
+  );
+  $form['member_for_hack']['member_for_hack_date'] = array(
+    '#type' => 'date',
+    '#title' => t('Member since'),
+    '#default_value' => array(
+      'month' => date('n', $form_state['user']->created),
+      'day' => date('j', $form_state['user']->created),
+      'year' => date('Y', $form_state['user']->created),
+    ),
+    '#access' => user_access('change any user membership join date') || user_access('change own user membership join date'),
+  );
+  $form['#submit'][] = 'member_for_hack_form_submit';
+  return $form;
+}
+
+
+function member_for_hack_form_submit($form, &$form_state) {
+  if (!empty($form_state['values']['member_for_hack_date'])) {
+    $account = user_load($form['#user']->uid);
+    $account->created = mktime(0, 0, 0,
+      $form_state['values']['member_for_hack_date']['month'],
+      $form_state['values']['member_for_hack_date']['day'],
+      $form_state['values']['member_for_hack_date']['year']
+    );
+    user_save($account);
+  }
+}

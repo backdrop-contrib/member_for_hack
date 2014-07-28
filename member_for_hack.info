@@ -1,0 +1,3 @@
+name = Join date hack
+description = Change the time span shown as the "Member for" on user profiles.
+core = 7.x
