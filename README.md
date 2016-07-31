@@ -10,6 +10,8 @@ Suggested altered creation dates:
 
 This module isn't sensitive to specific times of day. It just implements the date, so it'll set the creation days when user profiles are saved to midnight, offset for timezone.
 
+![Member for hack modified user profile](images/member_for_hack_user_profile.png)
+
 Current Maintainer
 ------------------
 
