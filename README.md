@@ -15,7 +15,7 @@ This module isn't sensitive to specific times of day. It just implements the dat
 Current Maintainer
 ------------------
 
-- David Norman (https://github.com/deekayen)
+- None
 
 Credits
 -------
